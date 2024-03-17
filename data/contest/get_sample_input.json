@@ -1,0 +1,10 @@
+{
+    "sampleInput": {
+        "id": "65f1e9c88fd8fedc323dc2fd",
+        "text": "3\n[1,2,3,4,5,6,7]\n[5,4,3,2,1]\n[1,1,1,1]",
+        "questionId": "65f1e9c88fd8fedc323dc2f9",
+        "createdAt": "2024-03-13T18:00:39.991Z",
+        "updatedAt": "2024-03-14T17:29:56.060Z",
+        "index": 0
+    }
+}

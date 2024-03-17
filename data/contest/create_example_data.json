@@ -1,0 +1,5 @@
+{
+    "input":"[5,5,5,6,7,8]",
+    "output":"[5,8]",
+    "explanation":"the min value in the give array is 5 and max value in aray is 8"
+}

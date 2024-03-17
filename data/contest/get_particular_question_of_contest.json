@@ -1,0 +1,26 @@
+{
+    "question": {
+        "id": "65f1e9c88fd8fedc323dc2f9",
+        "title": "min-max",
+        "difficulty_level": "EASY",
+        "score": 100,
+        "description": "Given an array of integers, find the minimum and maximum values in the array.",
+        "constraints": [
+            "The array will contain at least one element.",
+            "The array will may contain any duplicate elements.",
+            "The array will contain only integers.",
+            "The array may contains non-positive integers"
+        ],
+        "explanations": [
+            "initiate the variabes min and max",
+            "set both the variable to 0th index value of array",
+            "check if the value at 0th index is less than min then set min to that value",
+            "check if the value at 0th index is greater than max then set max to that value",
+            "iterate over the array from 1 to last index"
+        ],
+        "createdAt": "2024-03-13T18:00:39.991Z",
+        "updatedAt": "2024-03-13T18:00:39.991Z",
+        "contestId": "65f1e9c88fd8fedc323dc2f8",
+        "index": 0
+    }
+}

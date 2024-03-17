@@ -1,0 +1,13 @@
+{
+  "contest": {
+      "id": "65f1e9c88fd8fedc323dc2f8",
+      "name": "weak - 100",
+      "description": "A weakly contest to test the iq of students and best practice of logical building ability in students.",
+      "contest_level": "BEGINNER",
+      "startsAt": "2024-01-01T10:00:00.000Z",
+      "endsAt": "2024-01-01T11:00:00.000Z",
+      "noOfQuestions": 4,
+      "createdAt": "2024-03-13T18:00:39.991Z",
+      "updatedAt": "2024-03-13T18:00:39.991Z"
+  }
+}

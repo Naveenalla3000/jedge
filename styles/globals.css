@@ -1,0 +1,527 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 346.8 77.2% 49.8%;
+    --radius: 0.5rem;
+    --scroll-indicator-color: #000;
+    --eye-color: #000;
+    --eye-ball-color: #fff;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 346.8 77.2% 49.8%;
+    --scroll-indicator-color: #fff;
+    --eye-color: #fff;
+    --eye-ball-color: #000;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.codemirror-textarea {
+  font-family: Arial, monospace;
+  font-size: 22px;
+}
+.ͼ1 .cm-lineNumbers .cm-gutterElement {
+  padding: 1px 0px 0px 2px;
+  min-width: 0px;
+}
+
+#mouse-scroll {
+  position: absolute;
+  cursor: pointer;
+  left: 50%;
+  right: 50%;
+  bottom: 10%;
+  -webkit-transform: translateX(-50%);
+ 
+}
+
+#mouse-scroll span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  border-right: 2px solid var(--scroll-indicator-color);
+  border-bottom: 2px solid var(--scroll-indicator-color);
+  margin: 0 0 3px 5px;
+}
+
+#mouse-scroll .mouse {
+  height: 21px;
+  width: 14px;
+  border-radius: 10px;
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+  border: 2px solid var(--scroll-indicator-color);
+  top: 170px;
+}
+#mouse-scroll .down-arrow-1 {
+  margin-top: 6px;
+}
+#mouse-scroll .down-arrow-1, #mouse-scroll .down-arrow-2, #mouse-scroll .down-arrow-3 {
+  -webkit-animation: mouse-scroll 1s infinite; 
+    -moz-animation: mouse-scroll 1s infinite;
+}
+#mouse-croll .down-arrow-1 {
+   -webkit-animation-delay: .1s; 
+   -moz-animation-delay: .1s;
+   -webkit-animation-direction: alternate;
+}
+#mouse-scroll .down-arrow-2 {
+  -webkit-animation-delay: .2s; 
+  -moz-animation-delay: .2s;
+  -webkit-animation-direction: alternate;
+}
+#mouse-scroll .down-arrow-3 {
+   -webkit-animation-delay: .3s;
+   -moz-animation-dekay: .3s;
+   -webkit-animation-direction: alternate;
+}
+#mouse-scroll .mouse-in {
+  height: 5px;
+  width: 2px;
+  display: block; 
+  margin: 5px auto;
+  background: var(--scroll-indicator-color);
+  position: relative;
+}
+#mouse-scroll .mouse-in {
+ -webkit-animation: animated-mouse 1.2s ease infinite;
+  moz-animation: mouse-animated 1.2s ease infinite;
+}
+
+@-webkit-keyframes animated-mouse {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+     opacity: 0;
+    -webkit-transform: translateY(6px);
+    -ms-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}
+@-webkit-keyframes mouse-scroll {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  } 
+}
+@keyframes mouse-scroll {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#courses-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#color-gradent{
+  background-image: linear-gradient(to right, #D53F8C, #667EEA, #38A169);
+  display: inline-block;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+#trophy-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0rem;
+}
+#items-wrapper{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); 
+  gap: 2rem;
+  justify-items: center; 
+  align-items: center;
+}
+@media (min-width: 768px) { 
+  #items-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.VIpgJd-ZVi9od-l4eHX-hSRGPd{
+  display: none;
+}
+.goog-te-gadget{
+  font-size: 0px !important;
+  font-family: arial;
+}
+
+
+.goog-te-combo{
+  display: flex;
+  height: 2.5rem; /* 10 units in Tailwind's default spacing scale */
+  width: max-content;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid; /* Assuming 'border-input' is a custom color, you need to define it */
+  background-color: transparent; /* bg-background - you need to specify the color */
+  padding: 0.5rem 0.75rem; /* px-3 py-2 */
+  font-size: 0.875rem; /* text-sm */
+}
+
+.goog-te-combo:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.goog-te-combo::placeholder {
+  color: var(--scroll-indicator-color);/* Specify the muted foreground color */
+}
+
+.goog-te-combo:focus {
+  outline: none;
+}
+
+.goog-te-combo > span {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#robo-gif{
+  position: absolute;
+  right: 7rem;
+  animation: robo-animation 5s infinite ease-in-out;
+}
+
+@keyframes robo-animation {
+  0%, 
+  100%{
+    top: 12rem;
+  }
+  
+  25%, 75%{
+    top: 14rem;
+  }
+  50%{
+    top: 12rem;
+  }
+}
+
+.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__top {
+  border-bottom: 0px !important;
+}
+
+
+/* .cm-gutters{
+  height: 0px !important;
+  display: none !important;
+  min-height: 0px !important;
+} */
+
+
+@keyframes clockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes counter-clockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+/* 
+.gearbox {
+  background: var(--background);
+  border: none;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
+} */
+
+.gearbox .overlay {
+  border-radius: 6px;
+  content: "";
+  
+
+  z-index: 10;
+  box-shadow: inset 0px 0px 20px black;
+  transition: background 0.2s;
+}
+
+.gearbox .overlay {
+  background: transparent;
+}
+
+.gear {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  box-shadow: 0px -1px 0px 0px #888888, 0px 1px 0px 0px black;
+  border-radius: 30px;
+}
+
+.gear.large {
+  height: 120px;
+  width: 120px;
+  border-radius: 60px;
+}
+
+.gear.large:after {
+  height: 96px;
+  width: 96px;
+  border-radius: 48px;
+  margin-left: -48px;
+  margin-top: -48px;
+}
+
+.gear.one {
+  top: 12px;
+  left: 10px;
+}
+
+.gear.two {
+  top: 61px;
+  left: 60px;
+}
+
+.gear.three {
+  top: 110px;
+  left: 10px;
+}
+
+.gear.four {
+  top: 13px;
+  left: 128px;
+}
+
+.gear:after {
+  content: "";
+  position: absolute;
+  height: 36px;
+  width: 36px;
+  border-radius: 36px;
+  background: var(--background);
+  top: 50%;
+  left: 50%;
+  margin-left: -18px;
+  margin-top: -18px;
+  z-index: 3;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1), inset 0px 0px 10px rgba(0, 0, 0, 0.1), inset 0px 2px 0px 0px #090909, inset 0px -1px 0px 0px #888888;
+}
+
+.gear-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: #555;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.large .gear-inner {
+  border-radius: 60px;
+}
+
+.gear.one .gear-inner {
+  animation: counter-clockwise 3s infinite linear;
+}
+
+.gear.two .gear-inner {
+  animation: clockwise 3s infinite linear;
+}
+
+.gear.three .gear-inner {
+  animation: counter-clockwise 3s infinite linear;
+}
+
+.gear.four .gear-inner {
+  animation: counter-clockwise 6s infinite linear;
+}
+
+.gear-inner .bar {
+  background: #555;
+  height: 16px;
+  width: 76px;
+  position: absolute;
+  left: 50%;
+  margin-left: -38px;
+  top: 50%;
+  margin-top: -8px;
+  border-radius: 2px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.large .gear-inner .bar {
+  margin-left: -68px;
+  width: 136px;
+}
+
+.gear-inner .bar:nth-child(2) {
+  transform: rotate(60deg);
+}
+
+.gear-inner .bar:nth-child(3) {
+  transform: rotate(120deg);
+}
+
+.gear-inner .bar:nth-child(4) {
+  transform: rotate(90deg);
+}
+
+.gear-inner .bar:nth-child(5) {
+  transform: rotate(30deg);
+}
+
+.gear-inner .bar:nth-child(6) {
+  transform: rotate(150deg);
+}
+
+
+/* count down timer */
+.notice {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.notice > span {
+  color: var(--eye-color);
+}
+
+
+.show-counter .countdown-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  border: 1px solid #ebebeb;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  color: #000;
+}
+
+.show-counter .countdown {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.show-counter .countdown.danger {
+  color: #E11D48;
+}
+
+.show-counter .countdown > p {
+  margin: 0;
+}
+
+.show-counter .countdown > span {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* internal server error */
+.error-wrapper{
+  margin-top: 40px;
+  text-align: center;
+  align-items: center
+}
+
+.error-num{
+  font-size: 8em;
+  font-family: 'Arial Black'
+}
+
+.eye{
+  background: var(--eye-color);
+  border-radius: 50%;
+  display: inline-block;
+  height: 100px;
+  position: relative;
+  width: 100px;
+  &::after{
+    background: var(--eye-ball-color);
+    border-radius: 50%;
+    bottom: 56.1px;
+    content: '';
+    height: 33px;
+    position: absolute;
+    right: 33px;
+    width: 33px;
+  }
+}
+
+

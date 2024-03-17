@@ -1,0 +1,12 @@
+{
+    "example": {
+        "id": "65f1e9c88fd8fedc323dc2fa",
+        "input": "[1,2,3,4,5]",
+        "output": "[1,5]",
+        "explanation": "the min value in the give array is 1 and max value in aray is 5",
+        "questionId": "65f1e9c88fd8fedc323dc2f9",
+        "createdAt": "2024-03-13T18:00:39.991Z",
+        "updatedAt": "2024-03-13T18:00:39.991Z",
+        "index": 0
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "questions": [
+        {
+            "id": "65f1e9c88fd8fedc323dc2f9",
+            "title": "min-max",
+            "difficulty_level": "EASY",
+            "score": 100,
+            "description": "Given an array of integers, find the minimum and maximum values in the array.",
+            "constraints": [
+                "The array will contain at least one element.",
+                "The array will may contain any duplicate elements.",
+                "The array will contain only integers.",
+                "The array may contains non-positive integers"
+            ],
+            "explanations": [
+                "initiate the variabes min and max",
+                "set both the variable to 0th index value of array",
+                "check if the value at 0th index is less than min then set min to that value",
+                "check if the value at 0th index is greater than max then set max to that value",
+                "iterate over the array from 1 to last index"
+            ],
+            "createdAt": "2024-03-13T18:00:39.991Z",
+            "updatedAt": "2024-03-13T18:00:39.991Z",
+            "contestId": "65f1e9c88fd8fedc323dc2f8",
+            "index": 0
+        },
+        {
+            "id": "65f1e9c88fd8fedc323dc2ff",
+            "title": "find-duplicates",
+            "difficulty_level": "EASY",
+            "score": 100,
+            "description": "Given an array of integers where each element appears twice except for one, find that single one.",
+            "constraints": [
+                "The array will contain at least one element.",
+                "Every element appears twice except for one.",
+                "The array will contain only integers."
+            ],
+            "explanations": [
+                "Use a hash table to count occurrences of each element.",
+                "Iterate through the hash table to find the element that appears once.",
+                "Return the element found."
+            ],
+            "createdAt": "2024-03-13T18:00:39.991Z",
+            "updatedAt": "2024-03-13T18:00:39.991Z",
+            "contestId": "65f1e9c88fd8fedc323dc2f8",
+            "index": 1
+        },
+        {
+            "id": "65f1e9c88fd8fedc323dc305",
+            "title": "sum-of-pairs",
+            "difficulty_level": "EASY",
+            "score": 150,
+            "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
+            "constraints": [
+                "The array nums will contain at least two elements.",
+                "The array nums will contain only integers.",
+                "There is exactly one solution for each input."
+            ],
+            "explanations": [
+                "Use a hashmap to store indices of the nums array.",
+                "For each number in the array, check if target - number exists in the hashmap.",
+                "If it exists, return the current index and the found index from the hashmap.",
+                "If not, add the number along with its index to the hashmap.",
+                "Continue until a solution is found."
+            ],
+            "createdAt": "2024-03-13T18:00:39.991Z",
+            "updatedAt": "2024-03-13T18:00:39.991Z",
+            "contestId": "65f1e9c88fd8fedc323dc2f8",
+            "index": 2
+        },
+        {
+            "id": "65f1e9c88fd8fedc323dc30b",
+            "title": "rotate-array",
+            "difficulty_level": "MEDIUM",
+            "score": 200,
+            "description": "Given an array, rotate the array to the right by k steps, where k is non-negative.",
+            "constraints": [
+                "Try to come up as many solutions as you can, there are at least three different ways to solve this problem.",
+                "Could you do it in-place with O(1) extra space?"
+            ],
+            "explanations": [
+                "Use a temporary array to place every element in its correct position. Then copy these elements back to the original array.",
+                "Rotate one-by-one. Take the last element and move the rest of the elements forward by one position. Do this k times.",
+                "Reverse the array, then reverse the first k elements followed by reversing the rest n-k elements."
+            ],
+            "createdAt": "2024-03-13T18:00:39.991Z",
+            "updatedAt": "2024-03-13T18:00:39.991Z",
+            "contestId": "65f1e9c88fd8fedc323dc2f8",
+            "index": 3
+        }
+    ]
+}

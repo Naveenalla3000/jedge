@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ContestLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+// model -1 
+model Example {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  input       String
+  output      String
+  explanation String
+  questionId  String   @db.ObjectId
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  index       Int      @db.Int
+
+  @@index([index])
+}
+
+// model -2
+// model Constraint {
+//   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+//   text       String[]
+//   questionId String   @db.ObjectId
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+//   index      Int      @db.Int
+
+//   @@index([index])
+// }
+
+// model -3
+// model Explanation {
+//   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+//   text       String
+//   questionId String   @db.ObjectId
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+//   index      Int      @db.Int
+
+//   @@index([index])
+// }
+
+// model -4
+model SampleInput {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  questionId String   @db.ObjectId
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  index      Int      @db.Int
+
+  @@unique([questionId])
+  @@index([index])
+}
+
+// model -5
+model SampleOutput {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  questionId String   @db.ObjectId
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  index      Int      @db.Int
+
+  @@unique([questionId])
+  @@index([index])
+}
+
+// model -6
+model Question {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  difficulty_level Difficulty
+  score            Int
+  description      String
+  constraints      String[]
+  examples         Example[]
+  explanations     String[]
+  sampleInputs     SampleInput[]
+  sampleOutputs    SampleOutput[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  Contest          Contest?       @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  contestId        String?        @db.ObjectId
+  index            Int            @db.Int
+
+  @@index([index])
+}
+
+// model -7
+model Contest {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  contest_level ContestLevel
+  startsAt      DateTime
+  endsAt        DateTime
+  questions     Question[]
+  noOfQuestions Int
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}

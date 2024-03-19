@@ -5,15 +5,17 @@ import { HttpStatusCode } from "@/constants"
 
 // you need to more customise it a lot more
 // to get the all questions from one perticular contest
+// !!!no need
 export const GET = async (
   request: NextRequest,
   { params }: { params: { contest_id: string } }
 ) => {
   try {
     await connectDb()
+    const { contest_id } = params
     const questions = await prisma.question.findMany({
       where: {
-        contestId: params.contest_id,
+        contestId: contest_id,
       },
     })
     return NextResponse.json({ questions }, { status: HttpStatusCode.OK, statusText: "OK" })

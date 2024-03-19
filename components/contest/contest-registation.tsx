@@ -9,8 +9,6 @@ import { contestInstructions } from "@/config/site"
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -26,8 +24,26 @@ import {
 } from "@/components/ui/table"
 import { IContest } from "@/app/(root)/contest/page"
 
-import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
+
+const scores = [
+  {
+    position: "1st",
+    points: 2000,
+  },
+  {
+    position: "2st",
+    points: 1000,
+  },
+  {
+    position: "3st",
+    points: 500,
+  },
+  {
+    position: "Bonus",
+    points: 100,
+  },
+]
 
 type Props = {
   contestData: IContest
@@ -39,24 +55,6 @@ const ContestRegistation = (props: Props) => {
   const [isAccknowledged, setIsAccknowledged] = useState<boolean>(false)
   const handleAcknowledged = () => setIsAccknowledged(!isAccknowledged)
 
-  const scores = [
-    {
-      position: "1st",
-      points: 2000,
-    },
-    {
-      position: "2st",
-      points: 1000,
-    },
-    {
-      position: "3st",
-      points: 500,
-    },
-    {
-      position: "Bonus",
-      points: 100,
-    },
-  ]
   return (
     <div className="flex items-center justify-between mt-[1rem] gap-x-8">
       <div className="rules-aggrement mt-[2rem]">

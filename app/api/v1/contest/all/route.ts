@@ -8,10 +8,25 @@ export const GET = async (request: NextRequest) => {
     await connectDb()
     const contests = await prisma.contest.findMany()
     return NextResponse.json(
-      { contests:contests },
+      { contests: contests },
       { status: HttpStatusCode.OK, statusText: "OK" }
     )
-  } catch (error) {
+  } catch (error: any) {
+    if (
+      error.code === "P2025" ||
+      error.code === "P2023" ||
+      error.code === "P2010"
+    ) {
+      return NextResponse.json(
+        {
+          error: "Question not found",
+        },
+        {
+          status: HttpStatusCode.NOT_FOUND,
+          statusText: "Not Found",
+        }
+      )
+    }
     console.log(error)
     return NextResponse.json(
       { error: error },

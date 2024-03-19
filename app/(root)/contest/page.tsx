@@ -40,7 +40,7 @@ interface ProblemInterface {
   score: number
 }
 
-export interface IQuestion {
+interface IQuestion {
   id: string
   title: string
   difficulty_level: string
@@ -69,10 +69,8 @@ const Page = (props: Props) => {
   const { data, isLoading, error } = useGetContestQuery(contestId)
 
   useEffect(() => {
-    if (data) {
+    if (data) 
       setContestData(data.contestData)
-      console.log(data)
-    }
   }, [data])
 
   if (isLoading) {
@@ -164,7 +162,7 @@ const Page = (props: Props) => {
                               {question.difficulty_level}
                             </TableCell>
                             <TableCell className="text-right w-[200px]">
-                              {"problemInstance.status"}
+                              {"Completed"}
                             </TableCell>
                             <TableCell className="text-right w-[200px]">
                               {question.score}
@@ -196,7 +194,7 @@ const Page = (props: Props) => {
       )}
       {contestId && questionId && (
         <>
-          <ContestQuestion />
+          <ContestQuestion contestData={contestData} contestId={contestId} questionId={questionId} />
         </>
       )}
     </section>

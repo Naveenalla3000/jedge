@@ -524,4 +524,11 @@
   }
 }
 
+#example-wrapper{
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  letter-spacing: 0.05em;
+  white-space: break-spaces;
+  line-height: 1.25rem; 
+}
 

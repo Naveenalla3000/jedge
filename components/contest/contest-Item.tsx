@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import { calculateDuration } from "@/utils/calculate-duriation"
 
 import { Icontest } from "@/types/default"
 import { Badge } from "@/components/ui/badge"
@@ -31,15 +32,6 @@ const ContestItem: React.FC<ContestItemProps> = ({ contest }) => {
     contest_level,
   } = contest
 
-  const calculateDuration = (startsAt: string, endsAt: string): string => {
-    const startDate = new Date(startsAt)
-    const endDate = new Date(endsAt)
-    const durationMs = endDate.getTime() - startDate.getTime()
-    const hours = Math.floor(durationMs / (1000 * 60 * 60))
-    const minutes = Math.floor((durationMs / (1000 * 60)) % 60)
-    const seconds = Math.floor((durationMs / 1000) % 60)
-    return `${hours > 0 ? `${hours}h ` : ""}${minutes}m ${seconds}s`
-  }
   const countdownStartTimeToDate = new Date(startsAt).getTime()
   const countdownEndTimeToDate = new Date(endsAt).getTime()
   return (

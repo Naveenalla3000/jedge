@@ -1,9 +1,11 @@
 import { HttpMethods } from "@/constants"
 
-import { Contest } from "@/types/default"
-
 import { api } from "../api"
 
+interface IGetQuestion {
+  contestId: string
+  questionId: string
+}
 export const contestApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllContests: builder.query({
@@ -20,7 +22,18 @@ export const contestApi = api.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    getQuestion: builder.query<any, IGetQuestion>({
+      query: ({ contestId, questionId }) => ({
+        url: `/contest/${contestId}/question/${questionId}`,
+        method: HttpMethods.GET,
+        credentials: "include" as const,
+      }),
+    }),
   }),
 })
 
-export const { useGetAllContestsQuery,useGetContestQuery } = contestApi
+export const {
+  useGetAllContestsQuery,
+  useGetContestQuery,
+  useGetQuestionQuery,
+} = contestApi

@@ -30,6 +30,7 @@
     "@uiw/codemirror-theme-dracula": "^4.21.24",
     "@uiw/codemirror-theme-github": "^4.21.24",
     "@uiw/codemirror-theme-monokai": "^4.21.24",
+    "@uiw/codemirror-theme-solarized": "^4.21.24",
     "@uiw/codemirror-theme-vscode": "^4.21.24",
     "@uiw/codemirror-theme-xcode": "^4.21.24",
     "@uiw/react-codemirror": "^4.21.24",
@@ -49,6 +50,7 @@
     "react-resizable-panels": "^2.0.12",
     "react-type-animation": "^3.2.0",
     "sharp": "^0.31.3",
+    "sonner": "^1.4.3",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6"
   },

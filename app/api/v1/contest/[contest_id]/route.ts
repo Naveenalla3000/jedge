@@ -93,7 +93,11 @@ export const GET = async (
       { status: HttpStatusCode.OK, statusText: "OK" }
     )
   } catch (error: any) {
-    if (error.code === "P2025" || error.code === "P2023") {
+    if (
+      error.code === "P2025" ||
+      error.code === "P2023" ||
+      error.code === "P2010"
+    ) {
       return NextResponse.json(
         {
           error: "Contest not found",

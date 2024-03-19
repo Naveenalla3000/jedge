@@ -13,6 +13,23 @@ export const GET = async (
     await connectDb()
     // logic to get a particular question for a particular contest
     const { contest_id, question_id } = params
+    const contest = await prisma.contest.findUnique({
+      where: { id: contest_id },
+    })
+    if (!contest) {
+      return NextResponse.json(
+        { error: "Contest not found" },
+        { status: HttpStatusCode.NOT_FOUND, statusText: "Not Found" }
+      )
+    }
+    // present date
+    const presentDate = new Date()
+    if (presentDate < contest.startsAt) {
+      return NextResponse.json(
+        { error: "Bad Request contest not started" },
+        { status: HttpStatusCode.BAD_REQUEST, statusText: "Bad Request" }
+      )
+    }
     const question = await prisma.question.findUnique({
       where: {
         id: question_id,
@@ -30,12 +47,37 @@ export const GET = async (
         }
       )
     }
+    const examples = await prisma.example.findMany({
+      where: {
+        questionId: question_id,
+      },
+    })
+    const sampleInput = await prisma.sampleInput.findUnique({
+      where: {
+        questionId: question_id,
+      },
+    })
+    const sampleOutput = await prisma.sampleOutput.findUnique({
+      where: {
+        questionId: question_id,
+      },
+    })
+    const questionData = {
+      ...question,
+      examples,
+      sampleInput,
+      sampleOutput,
+    }
     return NextResponse.json(
-      { question },
+      { questionData },
       { status: HttpStatusCode.OK, statusText: "OK" }
     )
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if (
+      error.code === "P2025" ||
+      error.code === "P2023" ||
+      error.code === "P2010"
+    ) {
       return NextResponse.json(
         {
           error: "Question not found",

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { HttpStatusCode } from "@/constants"
+import { HttpStatusCode, errorCodes } from "@/constants"
 import prisma from "@/prisma"
 import { connectDb } from "@/utils"
 
@@ -37,7 +37,7 @@ export const PATCH = async (
       { statusText: "UPDATED", status: HttpStatusCode.OK }
     )
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "SampleInput not found",
@@ -79,7 +79,7 @@ export const GET = async (
       })
     return NextResponse.json({ sampleInput }, { statusText: "OK", status: 200 })
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "SampleInput not found",

@@ -39,17 +39,6 @@ export const POST = async (
     )
   } catch (error: any) {
     console.log(error)
-    if (error.code === "P2025") {
-      return NextResponse.json(
-        {
-          error: "examples not found to this question",
-        },
-        {
-          status: HttpStatusCode.NOT_FOUND,
-          statusText: "Not Found",
-        }
-      )
-    }
     return NextResponse.json(
       { error },
       {

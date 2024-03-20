@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { HttpStatusCode } from "@/constants"
+import { HttpStatusCode, errorCodes } from "@/constants"
 import prisma from "@/prisma"
 import { connectDb } from "@/utils"
 
@@ -12,11 +12,7 @@ export const GET = async (request: NextRequest) => {
       { status: HttpStatusCode.OK, statusText: "OK" }
     )
   } catch (error: any) {
-    if (
-      error.code === "P2025" ||
-      error.code === "P2023" ||
-      error.code === "P2010"
-    ) {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "Question not found",

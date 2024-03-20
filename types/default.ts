@@ -73,3 +73,31 @@ export interface Icontest {
   contest_level: ContestLevel
   updated_at: string
 }
+
+export interface IExample {
+  input: string
+  output: string
+  explanation: string
+}
+
+export interface SampleIO {
+  id: string
+  text: string
+  questionId: string
+  createdAt: string
+  updatedAt: string
+}
+export interface IQuestion {
+  id: string
+  title: string
+  difficulty_level: string
+  score: number
+  description: string
+  constraints: string[]
+  explanations: string[]
+  contestId: string
+  examples: IExample[]
+  index: number
+  sampleInput: SampleIO
+  sampleOutput: SampleIO
+}

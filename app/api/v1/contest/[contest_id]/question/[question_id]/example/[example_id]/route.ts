@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { HttpStatusCode } from "@/constants"
+import { HttpStatusCode, errorCodes } from "@/constants"
 import prisma from "@/prisma"
 import { connectDb } from "@/utils"
 
@@ -31,7 +31,7 @@ export const GET = async (
       { status: HttpStatusCode.OK, statusText: "OK" }
     )
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "Example not found",
@@ -78,7 +78,7 @@ export const DELETE = async (
       { status: HttpStatusCode.OK, statusText: "DELETED" }
     )
   } catch (error: any) {
-    if (error.code === "P2025" || error.code === "P2023") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "Example not found",
@@ -134,7 +134,7 @@ export const PATCH = async (
       { status: HttpStatusCode.OK, statusText: "UPDATED" }
     )
   } catch (error: any) {
-    if (error.code === "P2025" || error.code === "P2023") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "Example not found",

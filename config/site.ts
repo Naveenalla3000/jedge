@@ -30,9 +30,9 @@ export const siteConfig = {
     },
   ],
   links: {
-    twitter: "https://twitter.com/shadcn",
+    twitter: "http://localhost:3000",
     github: "https://github.com/Naveenalla3000",
-    docs: "https://ui.shadcn.com",
+    docs: "http://localhost:3000",
   },
 }
 

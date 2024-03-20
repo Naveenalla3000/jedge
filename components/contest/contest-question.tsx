@@ -4,8 +4,12 @@ import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useGetQuestionQuery } from "@/redux/features/contest/contestApi"
 import { handleKeyDown } from "@/utils/copy-past"
+import { generateDefaultCode } from "@/utils/generateDefaultCode"
 import { showToast } from "@/utils/show-toast"
+import { cpp } from "@codemirror/lang-cpp"
+import { java } from "@codemirror/lang-java"
 import { javascript } from "@codemirror/lang-javascript"
+import { python } from "@codemirror/lang-python"
 import { EditorState } from "@codemirror/state"
 import {
   PlayIcon,
@@ -17,9 +21,10 @@ import { copilot } from "@uiw/codemirror-theme-copilot"
 import { dracula } from "@uiw/codemirror-theme-dracula"
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github"
 import { monokai } from "@uiw/codemirror-theme-monokai"
-import { xcodeDark,xcodeLight} from '@uiw/codemirror-theme-xcode'
+import { xcodeDark, xcodeLight } from "@uiw/codemirror-theme-xcode"
 import CodeMirror, { Extension } from "@uiw/react-codemirror"
 
+import { IQuestion } from "@/types/default"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -48,18 +53,41 @@ enum EditorTheme {
   GithubLight = "githubLight",
   Monokai = "monokai",
   XcodeDark = "xcodeDark",
-  XcodeLight= "xcodeLight",
+  XcodeLight = "xcodeLight",
   System = "system",
 }
+
+enum EditorLanguage {
+  cpp = "cpp",
+  java = "java",
+  javascript = "javascript",
+  python = "python",
+}
+
 const editorThemes = Object.values(EditorTheme).map((theme) => ({
-  value: theme,
-  displayName:
+  themeValue: theme,
+  themeDisplayName:
     theme.charAt(0).toUpperCase() +
     theme
       .slice(1)
       .replace(/([A-Z])/g, " $1")
       .trim(),
 }))
+const editorLanguages = Object.values(EditorLanguage).map((language) => ({
+  languageValue: language,
+  languageDisplayName:
+    language.charAt(0).toUpperCase() +
+    language
+      .slice(1)
+      .replace(/([A-Z])/g, " $1")
+      .trim(),
+}))
+const languageExtensions: Record<EditorLanguage, Extension> = {
+  [EditorLanguage.cpp]: cpp(),
+  [EditorLanguage.java]: java(),
+  [EditorLanguage.javascript]: javascript({ jsx: true }),
+  [EditorLanguage.python]: python(),
+}
 const themeExtensions: Record<EditorTheme, Extension> = {
   [EditorTheme.Copilot]: copilot,
   [EditorTheme.Dracula]: dracula,
@@ -76,33 +104,6 @@ type Props = {
   contestId: string
   contestData: IContest | undefined
 }
-interface Example {
-  input: string
-  output: string
-  explanation: string
-}
-
-interface SampleIO {
-  id: string
-  text: string
-  questionId: string
-  createdAt: string
-  updatedAt: string
-}
-interface IQuestion {
-  id: string
-  title: string
-  difficulty_level: string
-  score: number
-  description: string
-  constraints: string[]
-  explanations: string[]
-  contestId: string
-  examples: Example[]
-  index: number
-  sampleInput: SampleIO
-  sampleOutput: SampleIO
-}
 
 const ContestQuestion: React.FC<Props> = ({
   contestId,
@@ -114,8 +115,9 @@ const ContestQuestion: React.FC<Props> = ({
     questionId,
     contestId,
   })
-  const [value, setValue] = useState("console.log('Hello world!')")
+  const [value, setValue] = useState<string>("")
   const [editorTheme, setEditorTheme] = useState<Extension>(githubDark)
+  const [editorLanguage, setEditorLanguage] = useState<Extension>(python())
   const codeMirrorRef = useRef(null)
 
   useEffect(() => {
@@ -124,9 +126,13 @@ const ContestQuestion: React.FC<Props> = ({
 
   //get perious-code from localstorage
   const getPeriousCode = () => {
+    const selectedEditorLanguage: keyof typeof EditorLanguage =
+      (localStorage.getItem("editorLanguage") as keyof typeof EditorLanguage) ||
+      "python"
+    const defaultCode = generateDefaultCode(selectedEditorLanguage)
     const storedValue =
-      localStorage.getItem(`code-${questionId}`) ||
-      "console.log('Hello world!')"
+      localStorage.getItem(`code-${questionId}-${selectedEditorLanguage}`) ||
+      defaultCode
     setValue(storedValue)
   }
   // getting question
@@ -174,11 +180,43 @@ const ContestQuestion: React.FC<Props> = ({
     localStorage.setItem("editorTheme", editorThemeKey)
   }
 
+  useEffect(() => {
+    let storedEditorLanguageKey = localStorage.getItem("editorLanguage")
+    if (
+      storedEditorLanguageKey &&
+      Object.values(EditorLanguage).includes(
+        storedEditorLanguageKey as EditorLanguage
+      )
+    ) {
+      const storeEditorLanguage =
+        languageExtensions[storedEditorLanguageKey as EditorLanguage]
+      setEditorLanguage(storeEditorLanguage)
+    } else {
+      const defaultEditorLanguage = EditorLanguage.python
+      setEditorLanguage(languageExtensions[defaultEditorLanguage])
+      localStorage.setItem("editorLanguage", defaultEditorLanguage)
+    }
+  }, [])
+
+  const handleEditorLanguageChange = (
+    selectedLanguage: keyof typeof EditorLanguage
+  ) => {
+    setEditorLanguage(languageExtensions[selectedLanguage])
+    localStorage.setItem("editorLanguage", selectedLanguage)
+    const defaultCode = generateDefaultCode(selectedLanguage)
+    localStorage.setItem(`code-${questionId}-${selectedLanguage}`, defaultCode)
+    setValue(defaultCode)
+    console.log(selectedLanguage)
+  }
+
   const handleOnChange = (
     value: string,
     viewUpdate: { state: EditorState }
   ) => {
-    localStorage.setItem(`code-${questionId}`, value)
+    const selectedEditorLanguage: keyof typeof EditorLanguage =
+      (localStorage.getItem("editorLanguage") as keyof typeof EditorLanguage) ||
+      "python"
+    localStorage.setItem(`code-${questionId}-${selectedEditorLanguage}`, value)
     const state = viewUpdate.state.toJSON()
     localStorage.setItem("myEditorState", JSON.stringify(state))
   }
@@ -360,41 +398,49 @@ const ContestQuestion: React.FC<Props> = ({
                         }
                       >
                         <SelectTrigger className="w-[50%]">
-                          <SelectValue placeholder="Theme" />
+                          <SelectValue
+                            placeholder={
+                              localStorage.getItem("editorTheme") ||
+                              "choose Theme"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          {editorThemes.map(({ value, displayName }) => (
-                            <SelectItem key={value} value={value}>
-                              {displayName}
-                            </SelectItem>
-                          ))}
+                          {editorThemes.map(
+                            ({ themeValue, themeDisplayName }) => (
+                              <SelectItem key={themeValue} value={themeValue}>
+                                {themeDisplayName}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-
-                      <Select>
+                      <Select
+                        onValueChange={(value: keyof typeof EditorLanguage) =>
+                          handleEditorLanguageChange(value)
+                        }
+                      >
                         <SelectTrigger>
-                          <SelectValue placeholder="Language" />
+                          <SelectValue
+                            placeholder={
+                              localStorage.getItem("editorLanguage") ||
+                              "choose Language"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={EditorTheme.Dracula}>
-                            Dracula
-                          </SelectItem>
-                          <SelectItem value={EditorTheme.Monokai}>
-                            Monokai
-                          </SelectItem>
-                          <SelectItem value={EditorTheme.GithubDark}>
-                            Github dark
-                          </SelectItem>
-                          <SelectItem value={EditorTheme.GithubLight}>
-                            Github Light
-                          </SelectItem>
-                          <SelectItem value={EditorTheme.Copilot}>
-                            Copilot
-                          </SelectItem>
-                          <SelectItem value="system">System</SelectItem>
+                          {editorLanguages.map(
+                            ({ languageValue, languageDisplayName }) => (
+                              <SelectItem
+                                key={languageValue}
+                                value={languageValue}
+                              >
+                                {languageDisplayName}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-
                       <Button variant="outline">
                         {" "}
                         <ReloadIcon className="size-[1rem]" />
@@ -417,7 +463,7 @@ const ContestQuestion: React.FC<Props> = ({
                         height="1000px"
                         onKeyDown={handleKeyDown}
                         onContextMenu={handleContextMenu}
-                        extensions={[javascript({ jsx: true })]}
+                        extensions={[editorLanguage]}
                       />
                     </div>
                   </div>

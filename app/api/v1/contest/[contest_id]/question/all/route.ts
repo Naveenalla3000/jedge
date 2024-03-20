@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import prisma from "@/prisma"
 import { connectDb } from "@/utils"
-import { HttpStatusCode } from "@/constants"
+import { HttpStatusCode, errorCodes } from "@/constants"
 
 // you need to more customise it a lot more
 // to get the all questions from one perticular contest
@@ -20,7 +20,7 @@ export const GET = async (
     })
     return NextResponse.json({ questions }, { status: HttpStatusCode.OK, statusText: "OK" })
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "Contest not found",

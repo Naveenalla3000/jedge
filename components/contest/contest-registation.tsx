@@ -2,8 +2,7 @@
 
 import React, { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
-import { StarIcon, ThickArrowLeftIcon } from "@radix-ui/react-icons"
+import { StarIcon } from "@radix-ui/react-icons"
 
 import { contestInstructions } from "@/config/site"
 import {

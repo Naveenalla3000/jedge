@@ -28,4 +28,6 @@ export enum HttpStatusCode {
   NOT_IMPLEMENTED = 501,
 }
 
+export const errorCodes: string[] = ["P2025", "P2023", "P2010"]
+
 export const ApiVersion: string = "v1"

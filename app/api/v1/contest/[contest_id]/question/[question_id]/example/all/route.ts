@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
+import { HttpStatusCode, errorCodes } from "@/constants"
 import prisma from "@/prisma"
 import { connectDb } from "@/utils"
-import { HttpStatusCode } from "@/constants";
 
 export const GET = async (
   request: NextRequest,
@@ -18,9 +18,12 @@ export const GET = async (
         index: "asc",
       },
     })
-    return NextResponse.json({ examples }, { status: HttpStatusCode.OK, statusText: "OK" })
+    return NextResponse.json(
+      { examples },
+      { status: HttpStatusCode.OK, statusText: "OK" }
+    )
   } catch (error: any) {
-    if (error.code === "P2025") {
+    if ((error.code as string) in errorCodes) {
       return NextResponse.json(
         {
           error: "examples not found to this question",

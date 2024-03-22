@@ -22,3 +22,22 @@ export const defaultExamples: Example[] = [
     explanation: "The arrays we are merging are [2] and [1].",
   }
 ]
+
+export const scores: { position: string; points: number }[] = [
+  {
+    position: "1st",
+    points: 2000,
+  },
+  {
+    position: "2st",
+    points: 1000,
+  },
+  {
+    position: "3st",
+    points: 500,
+  },
+  {
+    position: "Bonus",
+    points: 100,
+  },
+]

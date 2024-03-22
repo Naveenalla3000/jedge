@@ -1,8 +1,12 @@
 "use client"
 
+import { ServerResponse } from "http"
 import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { useGetQuestionQuery } from "@/redux/features/contest/contestApi"
+import {
+  useGetQuestionQuery,
+  useSubmitSolutionMutation,
+} from "@/redux/features/contest/contestApi"
 import { handleKeyDown } from "@/utils/copy-past"
 import { generateDefaultCode } from "@/utils/generateDefaultCode"
 import { showToast } from "@/utils/show-toast"
@@ -24,7 +28,7 @@ import { monokai } from "@uiw/codemirror-theme-monokai"
 import { xcodeDark, xcodeLight } from "@uiw/codemirror-theme-xcode"
 import CodeMirror, { Extension } from "@uiw/react-codemirror"
 
-import { IQuestion } from "@/types/default"
+import { IQuestion, JedgeServerResponse } from "@/types/default"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -62,6 +66,16 @@ enum EditorLanguage {
   java = "java",
   javascript = "javascript",
   python = "python",
+}
+type LanguageIdMap = {
+  [key in EditorLanguage]: number
+}
+
+const languageIdMap: LanguageIdMap = {
+  [EditorLanguage.cpp]: 50,
+  [EditorLanguage.java]: 62,
+  [EditorLanguage.javascript]: 63,
+  [EditorLanguage.python]: 70,
 }
 
 const editorThemes = Object.values(EditorTheme).map((theme) => ({
@@ -105,6 +119,10 @@ type Props = {
   contestData: IContest | undefined
 }
 
+interface ApiResponse {
+  response: JedgeServerResponse
+}
+
 const ContestQuestion: React.FC<Props> = ({
   contestId,
   questionId,
@@ -118,11 +136,14 @@ const ContestQuestion: React.FC<Props> = ({
   const [value, setValue] = useState<string>("")
   const [editorTheme, setEditorTheme] = useState<Extension>(githubDark)
   const [editorLanguage, setEditorLanguage] = useState<Extension>(python())
+  const [submitSolution, { isLoading: isSubmiting }] =
+    useSubmitSolutionMutation()
+  const [response, setResponse] = useState<JedgeServerResponse | null>(null)
   const codeMirrorRef = useRef(null)
 
   useEffect(() => {
     getPeriousCode()
-  }, [questionId])
+  }, [questionId, editorLanguage])
 
   //get perious-code from localstorage
   const getPeriousCode = () => {
@@ -196,7 +217,7 @@ const ContestQuestion: React.FC<Props> = ({
       setEditorLanguage(languageExtensions[defaultEditorLanguage])
       localStorage.setItem("editorLanguage", defaultEditorLanguage)
     }
-  }, [])
+  }, [editorLanguage])
 
   const handleEditorLanguageChange = (
     selectedLanguage: keyof typeof EditorLanguage
@@ -204,8 +225,10 @@ const ContestQuestion: React.FC<Props> = ({
     setEditorLanguage(languageExtensions[selectedLanguage])
     localStorage.setItem("editorLanguage", selectedLanguage)
     const defaultCode = generateDefaultCode(selectedLanguage)
-    localStorage.setItem(`code-${questionId}-${selectedLanguage}`, defaultCode)
-    setValue(defaultCode)
+    const storedValue =
+      localStorage.getItem(`code-${questionId}-${selectedLanguage}`) ||
+      defaultCode
+    setValue(storedValue)
     console.log(selectedLanguage)
   }
 
@@ -213,10 +236,10 @@ const ContestQuestion: React.FC<Props> = ({
     value: string,
     viewUpdate: { state: EditorState }
   ) => {
-    const selectedEditorLanguage: keyof typeof EditorLanguage =
-      (localStorage.getItem("editorLanguage") as keyof typeof EditorLanguage) ||
-      "python"
+    const selectedEditorLanguage =
+      localStorage.getItem("editorLanguage") || "python"
     localStorage.setItem(`code-${questionId}-${selectedEditorLanguage}`, value)
+    setValue(value)
     const state = viewUpdate.state.toJSON()
     localStorage.setItem("myEditorState", JSON.stringify(state))
   }
@@ -229,12 +252,15 @@ const ContestQuestion: React.FC<Props> = ({
     })
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
-
-  if (error) {
-    return <InternalServerErrorPage />
+  const resetCode = () => {
+    const selectedEditorLanguage =
+      localStorage.getItem("editorLanguage") || "python"
+    const defaultCode = generateDefaultCode(selectedEditorLanguage)
+    localStorage.setItem(
+      `code-${questionId}-${selectedEditorLanguage}`,
+      defaultCode
+    )
+    setValue("")
   }
 
   const navigatePreviousQuestion = (questionIndex: number): string => {
@@ -253,6 +279,52 @@ const ContestQuestion: React.FC<Props> = ({
           contestData.questions[questionIndex + 1].id
         }`
       : ""
+  }
+
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+    if (isSubmiting) return
+    const selectedEditorLanguage: keyof typeof EditorLanguage =
+      (localStorage.getItem("editorLanguage") as keyof typeof EditorLanguage) ||
+      "python"
+    console.log(value)
+    try {
+      const res:ApiResponse = await submitSolution({
+        sourceCode: value,
+        languageId: languageIdMap[selectedEditorLanguage],
+      }).unwrap()
+      setResponse(res.response)
+
+      console.log(response)
+      const { status, stdout, stderr } = res.response
+      const { id, description } = status
+      if (id === 3) {
+        showToast({
+          title: "Success",
+          description: description,
+        })
+      } else {
+        showToast({
+          title: "Error",
+          description: description,
+        })
+        console.log(stderr)
+        console.log(stdout)
+      }
+    } catch (error) {
+      console.log(error)
+      showToast({
+        title: "Error",
+        description: "Something went wrong",
+      })
+    }
+  }
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    return <InternalServerErrorPage />
   }
 
   return (
@@ -441,7 +513,7 @@ const ContestQuestion: React.FC<Props> = ({
                           )}
                         </SelectContent>
                       </Select>
-                      <Button variant="outline">
+                      <Button variant="outline" onClick={resetCode}>
                         {" "}
                         <ReloadIcon className="size-[1rem]" />
                       </Button>
@@ -475,7 +547,11 @@ const ContestQuestion: React.FC<Props> = ({
                       <Button variant="secondary" className="w-[80px]">
                         <PlayIcon />
                       </Button>
-                      <Button variant="default" className="w-[80px]">
+                      <Button
+                        variant="default"
+                        className="w-[80px]"
+                        onClick={handleSubmit}
+                      >
                         Submit
                       </Button>
                     </div>
@@ -501,7 +577,7 @@ const ContestQuestion: React.FC<Props> = ({
                           Sample output
                         </Label>
                         <Textarea
-                          value={questionData.sampleOutput.text}
+                          value={response?.stdout || response?.stderr || ""}
                           onChange={(e: React.ChangeEvent) =>
                             showToast({
                               title: "You are not suppose to modify",

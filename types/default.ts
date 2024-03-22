@@ -101,3 +101,17 @@ export interface IQuestion {
   sampleInput: SampleIO
   sampleOutput: SampleIO
 }
+
+export interface JedgeServerResponse {
+  stdout: string | null | undefined;
+  time: string |null | undefined;
+  memory: number | null | undefined ;
+  stderr: null | string;
+  token: string;
+  compile_output: null | string;
+  message: null | string;
+  status: {
+    id: number;
+    description: string;
+  };
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "source_code": "#include <stdio.h>\n\nint main(void) {\n  char name[10];\n  scanf(\"%s\", name);\n  printf(\"hello, %s\\n\", name);\n  return 0;\n}",
+    "language_id": "50",
+    "number_of_runs": null,
+    "stdin": "Judge0",
+    "expected_output": null,
+    "cpu_time_limit": null,
+    "cpu_extra_time": null,
+    "wall_time_limit": null,
+    "memory_limit": null,
+    "stack_limit": null,
+    "max_processes_and_or_threads": null,
+    "enable_per_process_and_thread_time_limit": null,
+    "enable_per_process_and_thread_memory_limit": null,
+    "max_file_size": null,
+    "enable_network": null
+  },
+
+  {
+    "source_code": "for _ in range(int(input())):\n  print _",
+    "language_id": "70",
+    "number_of_runs": null,
+    "stdin": "10",
+    "expected_output": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9",
+    "cpu_time_limit": null,
+    "cpu_extra_time": null,
+    "wall_time_limit": null,
+    "memory_limit": null,
+    "stack_limit": null,
+    "max_processes_and_or_threads": null,
+    "enable_per_process_and_thread_time_limit": null,
+    "enable_per_process_and_thread_memory_limit": null,
+    "max_file_size": null,
+    "enable_network": null
+  }
+]

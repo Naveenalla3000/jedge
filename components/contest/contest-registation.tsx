@@ -5,12 +5,7 @@ import Image from "next/image"
 import { StarIcon } from "@radix-ui/react-icons"
 
 import { contestInstructions } from "@/config/site"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
@@ -24,25 +19,8 @@ import {
 import { IContest } from "@/app/(root)/contest/page"
 
 import { Button } from "../ui/button"
+import { scores } from "@/config/examples"
 
-const scores = [
-  {
-    position: "1st",
-    points: 2000,
-  },
-  {
-    position: "2st",
-    points: 1000,
-  },
-  {
-    position: "3st",
-    points: 500,
-  },
-  {
-    position: "Bonus",
-    points: 100,
-  },
-]
 
 type Props = {
   contestData: IContest
